@@ -593,7 +593,6 @@ awx-kube-dev-build: Dockerfile.kube-dev
 ## Build awx image for deployment on Kubernetes environment.
 awx-kube-build: Dockerfile awx/ui_next/src
 	DOCKER_BUILDKIT=1 docker build -f Dockerfile \
-		--no-cache \
 		--build-arg VERSION=$(VERSION) \
 		--build-arg SETUPTOOLS_SCM_PRETEND_VERSION=$(VERSION) \
 		--build-arg HEADLESS=$(HEADLESS) \
