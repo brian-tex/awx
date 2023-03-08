@@ -1017,3 +1017,5 @@ AWX_MOUNT_ISOLATED_PATHS_ON_K8S = False
 
 # This is overridden downstream via /etc/tower/conf.d/cluster_host_id.py
 CLUSTER_HOST_ID = socket.gethostname()
+
+UI_NEXT = True

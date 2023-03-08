@@ -775,6 +775,16 @@ register(
     help_text=_('Indicates whether the instance is part of a kubernetes-based deployment.'),
 )
 
+register(
+    'UI_NEXT',
+    field_class=fields.BooleanField,
+    default=False,
+    label=_('Enable Next Generation User Interface'),
+    help_text=_('Enable the next generation user interface.'),
+    category=_('System'),
+    category_slug='system',
+)
+
 
 def logging_validate(serializer, attrs):
     if not serializer.instance or not hasattr(serializer.instance, 'LOG_AGGREGATOR_HOST') or not hasattr(serializer.instance, 'LOG_AGGREGATOR_TYPE'):
