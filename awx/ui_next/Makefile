@@ -29,6 +29,9 @@ UI_NEXT_GIT_BRANCH ?= main
 # UI_NEXT_BUILT_FILE is here so that we can use it as the non-phony build target
 UI_NEXT_BUILT_FILE = $(UI_NEXT_REL_DIR).ui-built
 
+## Default target of this Makefile build the ui_next/build from source
+ui-next: ui_next/build
+
 .PHONY: ui_next/clone-https
 ## Shallow clone the ui_next repo via https skip if UI_NEXT_GIT_REPO_HTTPS is undefined
 ui_next/clone-https:
@@ -96,9 +99,9 @@ ui_next/src/node_modules/webpack: $(UI_NEXT_SRC_DIR)
 $(UI_NEXT_SRC_DIR)/node_modules/webpack:
 	$(MAKE) ui_next/src/node_modules/webpack
 
-.PHONY: ui_next/build
 ## Copy ui_next/src/build to ui_next/build
-ui_next/build: $(UI_NEXT_SRC_DIR)/build
+ui_next/build:
+	$(MAKE) $(UI_NEXT_SRC_DIR)/build
 	@cp -r $(UI_NEXT_SRC_DIR)/build $(UI_NEXT_DIR_ABS) &&\
 	touch $(UI_NEXT_BUILT_FILE)
 
