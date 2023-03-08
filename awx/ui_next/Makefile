@@ -14,6 +14,11 @@ UI_NEXT_GIT_REPO_SSH ?= git@github.com:ansible/ansible-ui.git
 UI_NEXT_GIT_REPO_HTTPS ?= https://github.com/ansible/ansible-ui.git
 UI_NEXT_GIT_BRANCH ?= main
 
+# awx-manage collect static require the awx/ui_next/build to exist
+# therefore we have to commit the build directory to source control
+# so that make docker-compose will be able to start up uwsgi
+# UI_NEXT_BUILT_FILE is here so that we can use it as the non-phony build target
+UI_NEXT_BUILT_FILE = $(UI_NEXT_DIR).ui-built
 
 .PHONY: ui_next/clone-https
 ## Shallow clone the ui_next repo via https skip if UI_NEXT_GIT_REPO_HTTPS is undefined
@@ -72,30 +77,37 @@ ui_next/src/build: ui_next/src
 ## Copy ui_next/src/build to ui_next/build
 ui_next/build: ui_next/src/build
 	cp -r $(UI_NEXT_SRC_DIR)/build $(UI_NEXT_BUILD_DIR)
+	touch $(UI_NEXT_BUILT_FILE)
 
-## Alias for ui_next/build, will not run if build already exist
+## non PHONY target for ui_next/build. Will not run if build already exist
+$(UI_NEXT_BUILT_FILE):
+	$(MAKE) ui_next/build
+
+## Alias for ui_next/build.
+.PHONY: $(UI_NEXT_BUILD_DIR)
 $(UI_NEXT_BUILD_DIR):
 	$(MAKE) ui_next/build
 
 ## Alias for ui_next/clean
 $(UI_NEXT_DIR)clean:
-	rm -rf $(UI_NEXT_DIR)/src
-	rm -rf $(UI_NEXT_DIR)/build
+	rm -rf $(UI_NEXT_SRC_DIR)
+	rm -rf $(UI_NEXT_BUILD_DIR)
 
 .PHONY: ui_next/clean
 ## Clean ui_next
 ui_next/clean: ui_next/clean/build
-	rm -rf $(UI_NEXT_DIR)/src
+	rm -rf $(UI_NEXT_SRC_DIR)
 
 .PHONY: ui_next/clean/src
 ## Clean ui_next src
 ui_next/clean/src:
-	rm -rf $(UI_NEXT_DIR)/src
+	rm -rf $(UI_NEXT_SRC_DIR)
 
 .PHONY: ui_next/clean/build
 ## Clean ui_next build
 ui_next/clean/build:
-	rm -rf $(UI_NEXT_DIR)/build
+	rm -rf $(UI_NEXT_BUILD_DIR)
+	rm -rf $(UI_NEXT_BUILT_FILE)
 
 print-%:
 	@echo $($*)
