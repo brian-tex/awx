@@ -102,7 +102,8 @@ $(UI_NEXT_SRC_DIR)/node_modules/webpack:
 ## Copy ui_next/src/build to ui_next/build
 ui_next/build:
 	$(MAKE) $(UI_NEXT_SRC_DIR)/build
-	@cp -r $(UI_NEXT_SRC_DIR)/build $(UI_NEXT_DIR_ABS) &&\
+	@mkdir $(UI_NEXT_DIR_ABS)/build && \
+	cp -r $(UI_NEXT_SRC_DIR)/build/awx $(UI_NEXT_DIR_ABS)/build/media &&\
 	touch $(UI_NEXT_BUILT_FILE)
 
 ## Alias for ui_next/build. Will not run if .ui-built file already exist

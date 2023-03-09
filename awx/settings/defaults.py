@@ -298,7 +298,7 @@ TEMPLATES = [
             os.path.join(BASE_DIR, 'templates'),
             os.path.join(BASE_DIR, 'ui', 'build'),
             os.path.join(BASE_DIR, 'ui', 'public'),
-            os.path.join(BASE_DIR, 'ui_next', 'build', 'awx'),
+            os.path.join(BASE_DIR, 'ui_next', 'build', 'media'),
         ],
     },
 ]
